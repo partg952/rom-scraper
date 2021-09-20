@@ -53,6 +53,7 @@ app.get("/api/details",(req,res)=>{
 
 app.get("/api/homepage/:page",(req,res)=>{
     let page = req.params.page;
+    dataarr = [];
     request('https://www.gamulator.com/roms/psp?currentpage='+page).on('data',data=>{
         const $ = Cheerio.load(data);
         $('img.img-fluid').each(function(i){
