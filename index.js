@@ -3,6 +3,7 @@ const cors = require("cors");
 const request = require("requests");
 const app = express();
 const Cheerio = require("cheerio");
+const { data } = require("cheerio/lib/api/attributes");
 app.use(cors());
 const PORT = process.env.PORT || 8080;
 let dataarr = [];
@@ -33,6 +34,35 @@ app.get("/api/download",(req,res)=>{
         res.send($('a.download_link').attr("href"))
     })
 
+
 })
 
+app.get("/api/details",(req,res)=>{
+    let url = req.query.url;
+    request("https://www.gamulator.com"+url).on('data',data=>{
+        const $ = Cheerio.load(data);
+        dataarr.push($('img.img-fluid').attr("src"))
+        dataarr.push($('div.naslov > h1').text())
+        $('table.table > tbody > tr').each(function(i){
+            dataarr.push($(this).text())
+        })
+    })
+    res.send(dataarr);
+})
+
+app.get("/api/homepage/:page",(req,res)=>{
+    let page = req.params.page;
+    request('https://www.gamulator.com/roms/psp?currentpage='+page).on('data',data=>{
+        const $ = Cheerio.load(data);
+        $('img.img-fluid').each(function(i){
+            dataarr.push({
+               img: 'https://www.gamulator.com'+$(this).attr('src')  ,
+               title:$('h5.card-title').eq(i).text(),
+               url:$('div.card > a').eq(i).attr('href'),
+             })
+        })
+        res.send(dataarr);
+
+    })
+})
 app.listen(PORT,()=>console.log(`listening at ${PORT}`))
