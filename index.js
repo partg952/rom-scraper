@@ -26,4 +26,13 @@ app.get("/api/search",(req,res)=>{
     })
 })
 
+app.get("/api/download",(req,res)=>{
+    let url = req.query['url'];
+    request("https://www.gamulator.com"+url+"/download/fast").on('data',(data)=>{
+        const $ = Cheerio.load(data);
+        res.send($('a.download_link').attr("href"))
+    })
+
+})
+
 app.listen(PORT,()=>console.log(`listening at ${PORT}`))
