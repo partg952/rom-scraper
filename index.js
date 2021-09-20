@@ -21,6 +21,7 @@ app.get("/api/search",(req,res)=>{
               img: 'https://www.gamulator.com'+$(this).attr('src')  ,
               title:$('h5.card-title').eq(i).text(),
               url:$('div.card > a').eq(i).attr('href'),
+	      rating:$('div.opis').eq(i).text()
             })
        })
        res.send(dataarr);
@@ -59,6 +60,7 @@ app.get("/api/homepage/:page",(req,res)=>{
                img: 'https://www.gamulator.com'+$(this).attr('src')  ,
                title:$('h5.card-title').eq(i).text(),
                url:$('div.card > a').eq(i).attr('href'),
+	       rating:$('div.opis').eq(i).text()
              })
         })
         res.send(dataarr);
