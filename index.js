@@ -21,7 +21,8 @@ app.get("/api/search",(req,res)=>{
               img: 'https://www.gamulator.com'+$(this).attr('src')  ,
               title:$('h5.card-title').eq(i).text(),
               url:$('div.card > a').eq(i).attr('href'),
-	      rating:$('div.opis').eq(i).text()
+	      rating:$('div.opis').eq(i).text(),
+	      console_name:$('div.hideOverflow > a').eq(0).text()
             })
        })
        res.send(dataarr);
